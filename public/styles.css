@@ -1,0 +1,22 @@
+
+            body {
+                background-color: #f0f8ff;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .weather-box {
+                width: 100%;
+                max-width: 400px;
+                padding: 30px;
+                background-color: #ffffff;
+                border-radius: 15px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+            .weather-icon {
+                margin-top: 15px;
+            }
+        
