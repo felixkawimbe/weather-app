@@ -12,24 +12,15 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-//app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'ejs');
-app.set('views', './views');
 
-
-// Routes
+// Serve the static HTML page
 app.get('/', (req, res) => {
-    getWeather("Chingola", res);
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Handle POST for weather data
 app.post('/', (req, res) => {
     const city = req.body.city;
-    getWeather(city, res);
-});
-
-// Helper function to fetch weather and render HTML
-function getWeather(city, res) {
     const apiKey = "c540d5739e3f502bbd9118e07c6d2848";
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
@@ -45,13 +36,19 @@ function getWeather(city, res) {
                 const icon = weather.weather[0].icon;
                 const imageURL = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
-                res.render('index', { city, tempr, wethd, imageURL });
+                // Send HTML with weather results OR update via client-side JS
+                res.send(`
+                    <h2>The temperature in ${city} is ${tempr}°C</h2>
+                    <h4>${wethd}</h4>
+                    <img src="${imageURL}" />
+                    <br><a href="/">Back</a>
+                `);
             } catch (e) {
-                res.send(`<h3 style="text-align:center;">Error fetching weather. Try again.</h3>`);
+                res.send(`<h3>Error fetching weather. Try again.</h3>`);
             }
         });
     });
-}
+});
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
